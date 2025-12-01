@@ -5,6 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>孔允的个人主页</title>
     <style>
+        :root {
+            /* 默认主题（紫色） */
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --primary-color: #667eea;
+            --text-color: #333;
+            --content-bg: white;
+            --header-text: white;
+            --border-color: #e0e0e0;
+            --link-hover-bg: white;
+            --link-hover-text: #667eea;
+        }
+        
+        /* 深色主题 */
+        [data-theme="dark"] {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --primary-color: #0f3460;
+            --text-color: #e0e0e0;
+            --content-bg: #1e1e2e;
+            --header-text: white;
+            --border-color: #333;
+            --link-hover-bg: #0f3460;
+            --link-hover-text: white;
+        }
+        
+        /* 蓝色主题 */
+        [data-theme="blue"] {
+            --bg-gradient-start: #3498db;
+            --bg-gradient-end: #2980b9;
+            --primary-color: #3498db;
+            --text-color: #333;
+            --content-bg: white;
+            --header-text: white;
+            --border-color: #e0e0e0;
+            --link-hover-bg: white;
+            --link-hover-text: #3498db;
+        }
+        
+        /* 绿色主题 */
+        [data-theme="green"] {
+            --bg-gradient-start: #2ecc71;
+            --bg-gradient-end: #27ae60;
+            --primary-color: #2ecc71;
+            --text-color: #333;
+            --content-bg: white;
+            --header-text: white;
+            --border-color: #e0e0e0;
+            --link-hover-bg: white;
+            --link-hover-text: #2ecc71;
+        }
+        
+        /* 橙色主题 */
+        [data-theme="orange"] {
+            --bg-gradient-start: #f39c12;
+            --bg-gradient-end: #e67e22;
+            --primary-color: #f39c12;
+            --text-color: #333;
+            --content-bg: white;
+            --header-text: white;
+            --border-color: #e0e0e0;
+            --link-hover-bg: white;
+            --link-hover-text: #f39c12;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,9 +79,65 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+        
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .theme-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 0.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            min-width: 150px;
+        }
+        
+        .theme-menu.active {
+            display: block;
+        }
+        
+        .theme-option {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .theme-option:hover {
+            background: rgba(0,0,0,0.1);
         }
         
         .container {
@@ -27,7 +148,7 @@
         
         .header {
             text-align: center;
-            color: white;
+            color: var(--header-text);
             margin-bottom: 3rem;
         }
         
@@ -55,10 +176,11 @@
         }
         
         .content {
-            background: white;
+            background: var(--content-bg);
             border-radius: 15px;
             padding: 2rem;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: background 0.5s ease;
         }
         
         .section {
@@ -66,10 +188,11 @@
         }
         
         h2 {
-            color: #667eea;
+            color: var(--primary-color);
             margin-bottom: 1rem;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 0.5rem;
+            transition: color 0.5s ease;
         }
         
         .skills {
@@ -79,11 +202,12 @@
         }
         
         .skill {
-            background: #667eea;
+            background: var(--primary-color);
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.9rem;
+            transition: background 0.5s ease;
         }
         
         .projects {
@@ -92,10 +216,10 @@
         }
         
         .project {
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 1rem;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .project:hover {
@@ -104,7 +228,7 @@
         }
         
         .project h3 {
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 0.5rem;
         }
         
@@ -125,8 +249,8 @@
         }
         
         .link:hover {
-            background: white;
-            color: #667eea;
+            background: var(--link-hover-bg);
+            color: var(--link-hover-text);
         }
         
         @media (max-width: 768px) {
@@ -137,10 +261,31 @@
             h1 {
                 font-size: 2rem;
             }
+            
+            .theme-selector {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .theme-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="theme-selector">
+        <button class="theme-btn" id="themeBtn">🎨 主题</button>
+        <div class="theme-menu" id="themeMenu">
+            <div class="theme-option" data-theme="default">默认（紫色）</div>
+            <div class="theme-option" data-theme="dark">深色</div>
+            <div class="theme-option" data-theme="blue">蓝色</div>
+            <div class="theme-option" data-theme="green">绿色</div>
+            <div class="theme-option" data-theme="orange">橙色</div>
+        </div>
+    </div>
+    
     <div class="container">
         <header class="header">
             <div class="avatar">👨‍💻</div>
@@ -190,5 +335,39 @@
             <a href="https://github.com/YunKong-2000" class="link">GitHub</a>
         </div>
     </div>
+    
+    <script>
+        // 主题管理
+        const themeBtn = document.getElementById('themeBtn');
+        const themeMenu = document.getElementById('themeMenu');
+        const themeOptions = document.querySelectorAll('.theme-option');
+        
+        // 从 localStorage 加载保存的主题
+        const savedTheme = localStorage.getItem('theme') || 'default';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        
+        // 切换主题菜单显示
+        themeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeMenu.classList.toggle('active');
+        });
+        
+        // 点击主题选项
+        themeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const theme = option.getAttribute('data-theme');
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                themeMenu.classList.remove('active');
+            });
+        });
+        
+        // 点击页面其他地方关闭菜单
+        document.addEventListener('click', (e) => {
+            if (!themeBtn.contains(e.target) && !themeMenu.contains(e.target)) {
+                themeMenu.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
