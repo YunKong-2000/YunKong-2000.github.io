@@ -1,283 +1,112 @@
 <!DOCTYPE html>
+<!-- 
+    HTML5 文档类型声明
+    告诉浏览器这是一个 HTML5 文档
+-->
 <html lang="zh-CN">
+<!-- 
+    <html> 标签是 HTML 文档的根元素
+    lang="zh-CN" 指定页面语言为简体中文，有助于搜索引擎和屏幕阅读器
+-->
+
 <head>
+    <!-- 
+        <head> 标签包含文档的元数据（metadata）
+        这些信息不会直接显示在页面上，但对页面很重要
+    -->
+    
+    <!-- 字符编码声明：使用 UTF-8 编码，支持中文和特殊字符 -->
     <meta charset="UTF-8">
+    
+    <!-- 
+        视口（viewport）设置：响应式设计的关键
+        width=device-width: 页面宽度等于设备宽度
+        initial-scale=1.0: 初始缩放比例为 100%
+        这确保在移动设备上正确显示
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>孔允的个人主页</title>
-    <style>
-        :root {
-            /* 默认主题（紫色） */
-            --bg-gradient-start: #667eea;
-            --bg-gradient-end: #764ba2;
-            --primary-color: #667eea;
-            --text-color: #333;
-            --content-bg: white;
-            --header-text: white;
-            --border-color: #e0e0e0;
-            --link-hover-bg: white;
-            --link-hover-text: #667eea;
-        }
-        
-        /* 深色主题 */
-        [data-theme="dark"] {
-            --bg-gradient-start: #1a1a2e;
-            --bg-gradient-end: #16213e;
-            --primary-color: #0f3460;
-            --text-color: #e0e0e0;
-            --content-bg: #1e1e2e;
-            --header-text: white;
-            --border-color: #333;
-            --link-hover-bg: #0f3460;
-            --link-hover-text: white;
-        }
-        
-        /* 蓝色主题 */
-        [data-theme="blue"] {
-            --bg-gradient-start: #3498db;
-            --bg-gradient-end: #2980b9;
-            --primary-color: #3498db;
-            --text-color: #333;
-            --content-bg: white;
-            --header-text: white;
-            --border-color: #e0e0e0;
-            --link-hover-bg: white;
-            --link-hover-text: #3498db;
-        }
-        
-        /* 绿色主题 */
-        [data-theme="green"] {
-            --bg-gradient-start: #2ecc71;
-            --bg-gradient-end: #27ae60;
-            --primary-color: #2ecc71;
-            --text-color: #333;
-            --content-bg: white;
-            --header-text: white;
-            --border-color: #e0e0e0;
-            --link-hover-bg: white;
-            --link-hover-text: #2ecc71;
-        }
-        
-        /* 橙色主题 */
-        [data-theme="orange"] {
-            --bg-gradient-start: #f39c12;
-            --bg-gradient-end: #e67e22;
-            --primary-color: #f39c12;
-            --text-color: #333;
-            --content-bg: white;
-            --header-text: white;
-            --border-color: #e0e0e0;
-            --link-hover-bg: white;
-            --link-hover-text: #f39c12;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            min-height: 100vh;
-            transition: background 0.5s ease;
-        }
-        
-        .theme-selector {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        
-        .theme-btn {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .theme-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-        
-        .theme-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 0.5rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 0.5rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            display: none;
-            min-width: 150px;
-        }
-        
-        .theme-menu.active {
-            display: block;
-        }
-        
-        .theme-option {
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #333;
-            font-size: 0.9rem;
-        }
-        
-        .theme-option:hover {
-            background: rgba(0,0,0,0.1);
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .header {
-            text-align: center;
-            color: var(--header-text);
-            margin-bottom: 3rem;
-        }
-        
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid white;
-            margin: 0 auto 1rem;
-            background: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .content {
-            background: var(--content-bg);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: background 0.5s ease;
-        }
-        
-        .section {
-            margin-bottom: 2rem;
-        }
-        
-        h2 {
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-            transition: color 0.5s ease;
-        }
-        
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        
-        .skill {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            transition: background 0.5s ease;
-        }
-        
-        .projects {
-            display: grid;
-            gap: 1rem;
-        }
-        
-        .project {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .project:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .project h3 {
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-        
-        .links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .link {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 2px solid white;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-        
-        .link:hover {
-            background: var(--link-hover-bg);
-            color: var(--link-hover-text);
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .theme-selector {
-                top: 10px;
-                right: 10px;
-            }
-            
-            .theme-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
-            }
-        }
-    </style>
+    
+    <!-- 页面标题：显示在浏览器标签页上 -->
+    <title>孔允的个人主页 | CUDA开发者 | AI infra技术爱好者</title>
+    
+    <!-- SEO 优化：页面描述 -->
+    <meta name="description" content="孔允的个人主页，浙江大学在读博士生，从事CFD程序开发，CUDA开发者，AI infra技术爱好者">
+    
+    <!-- SEO 优化：关键词 -->
+    <meta name="keywords" content="孔允,个人主页,CUDA,AI infra,CFD,浙江大学,博士生">
+    
+    <!-- SEO 优化：作者信息 -->
+    <meta name="author" content="孔允">
+    
+    <!-- Open Graph 标签：社交媒体分享优化 -->
+    <meta property="og:title" content="孔允的个人主页">
+    <meta property="og:description" content="浙江大学在读博士生，从事CFD程序开发，使用CUDA，AI infra 学习中">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yunkong-2000.github.io">
+    
+    <!-- 主题颜色：移动浏览器地址栏颜色 -->
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- 结构化数据（JSON-LD）：帮助搜索引擎理解页面内容 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "孔允",
+        "jobTitle": "博士生",
+        "worksFor": {
+            "@type": "EducationalOrganization",
+            "name": "浙江大学"
+        },
+        "email": "yunkong2022@icloud.com",
+        "url": "https://github.com/YunKong-2000",
+        "sameAs": [
+            "https://github.com/YunKong-2000"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "杭州",
+            "addressCountry": "CN"
+        },
+        "knowsAbout": ["CUDA", "C++", "Python", "AI Infrastructure", "CFD"],
+        "description": "浙江大学在读博士生，从事CFD程序开发，使用CUDA，AI infra 学习中"
+    }
+    </script>
+    
+    <!-- 
+        外部 CSS 样式文件
+        将 CSS 提取到独立文件，实现模块化开发
+    -->
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+    <!-- 
+        ============================================
+        HTML 主体内容
+        ============================================
+    -->
+    
+    <!-- 页面加载器 -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+    
+    <!-- 主题选择器：固定在页面右上角 -->
     <div class="theme-selector">
+        <!-- 主题切换按钮 -->
         <button class="theme-btn" id="themeBtn">🎨 主题</button>
+        <!-- 
+            id="themeBtn": 给按钮一个唯一标识符
+            在 JavaScript 中可以通过 document.getElementById('themeBtn') 获取这个元素
+        -->
+        
+        <!-- 主题菜单：默认隐藏，点击按钮后显示 -->
         <div class="theme-menu" id="themeMenu">
+            <!-- 
+                data-theme 属性：自定义数据属性
+                用于存储主题名称，JavaScript 可以读取这个值
+            -->
             <div class="theme-option" data-theme="default">默认（紫色）</div>
             <div class="theme-option" data-theme="dark">深色</div>
             <div class="theme-option" data-theme="blue">蓝色</div>
@@ -286,88 +115,219 @@
         </div>
     </div>
     
+    <!-- 主容器：包含所有页面内容 -->
     <div class="container">
+        <!-- 页面头部：头像、姓名、副标题 -->
         <header class="header">
+            <!-- 
+                <header> 语义化标签：表示页面头部
+                有助于 SEO 和屏幕阅读器理解页面结构
+            -->
             <div class="avatar">👨‍💻</div>
+            <!-- 
+                头像区域：使用 emoji 作为头像
+                可以替换为：
+                - <img src="avatar.jpg" alt="头像"> 使用图片
+                - SVG 图标
+            -->
             <h1>孔允</h1>
+            <!-- 一级标题：页面主标题 -->
             <p class="subtitle">CUDA开发者 | AI infra技术爱好者</p>
+            <!-- 副标题：使用 | 分隔多个标签 -->
         </header>
         
+        <!-- 主要内容区域 -->
         <main class="content">
-            <section class="section">
+            <!-- 
+                <main> 语义化标签：表示页面主要内容
+                一个页面应该只有一个 <main> 标签
+            -->
+            
+            <!-- 关于我部分 -->
+            <section class="section fade-in">
+                <!-- 
+                    <section> 语义化标签：表示页面中的一个独立部分
+                    每个 section 应该有一个标题（h2）
+                -->
                 <h2>关于我</h2>
                 <p>浙江大学在读博士生，从事CFD程序开发，使用CUDA，AI infra 学习中</p>
+                <!-- 
+                    <p> 段落标签：用于文本段落
+                    可以添加更多段落，使用 <br> 换行
+                -->
             </section>
             
-            <section class="section">
+            <!-- 技能部分 -->
+            <section class="section fade-in">
                 <h2>技能</h2>
+                <!-- 技能标签展示 -->
                 <div class="skills">
+                    <!-- 
+                        <span> 行内元素：用于包裹小段文本
+                        这里用于创建技能标签
+                    -->
                     <span class="skill">CUDA C++</span>
                     <span class="skill">Python</span>
                     <span class="skill">Git</span>
                     <span class="skill">Docker</span>
+                    <span class="skill">C++</span>
+                    <span class="skill">Linux</span>
+                    <!-- 
+                        可以添加更多技能标签
+                        例如：<span class="skill">JavaScript</span>
+                    -->
+                </div>
+                
+                <!-- 技能进度条展示 -->
+                <div style="margin-top: 2rem;">
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>CUDA C++</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--skill-width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Python</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--skill-width: 80%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>C++</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--skill-width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-name">
+                            <span>Git</span>
+                            <span>70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="--skill-width: 70%"></div>
+                        </div>
+                    </div>
                 </div>
             </section>
             
-            <section class="section">
+            <!-- 学习记录部分 -->
+            <section class="section fade-in">
                 <h2>学习记录</h2>
                 <div class="projects">
+                    <!-- 项目卡片 -->
                     <div class="project">
                         <h3>CUDA 学习</h3>
+                        <!-- 三级标题：项目标题 -->
                         <p>掌握CUDA编程基础与优化技巧</p>
                     </div>
                     <div class="project">
                         <h3>线性代数学习</h3>
                         <p>矩阵乘及其他向量运算数学基础学习</p>
                     </div>
+                    <!-- 
+                        可以添加更多项目卡片
+                        可以添加链接：<a href="...">查看详情</a>
+                        可以添加图片：<img src="project.jpg" alt="项目截图">
+                    -->
                 </div>
             </section>
             
-            <section class="section">
+            <!-- 联系我部分 -->
+            <section class="section fade-in">
                 <h2>联系我</h2>
-                <p>个人邮箱: yunkong2022@icloud.com</p>
-                <p>校园邮箱: 12324058@zju.edu.cn</p>
-                <p>地点: 杭州, 中国</p>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <span>个人邮箱: <a href="mailto:yunkong2022@icloud.com">yunkong2022@icloud.com</a></span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <span>校园邮箱: <a href="mailto:12324058@zju.edu.cn">12324058@zju.edu.cn</a></span>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <span>地点: 杭州, 中国</span>
+                </div>
+                <!-- 
+                    可以添加更多联系方式：
+                    - 社交媒体链接（微信、微博、LinkedIn）
+                    - 电话号码
+                    - 地址（如果需要）
+                -->
             </section>
         </main>
         
-        <div class="links">
-            <a href="https://github.com/YunKong-2000" class="link">GitHub</a>
+        <!-- 外部链接区域 -->
+        <div class="links fade-in">
+            <!-- 
+                <a> 锚点标签：创建超链接
+                href: 链接地址
+                class: CSS 类名
+                target="_blank": 在新标签页打开（可选）
+            -->
+            <a href="https://github.com/YunKong-2000" class="link" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <!-- 
+                可以添加更多链接：
+                <a href="..." class="link">博客</a>
+                <a href="..." class="link">简历</a>
+            -->
         </div>
     </div>
     
-    <script>
-        // 主题管理
-        const themeBtn = document.getElementById('themeBtn');
-        const themeMenu = document.getElementById('themeMenu');
-        const themeOptions = document.querySelectorAll('.theme-option');
-        
-        // 从 localStorage 加载保存的主题
-        const savedTheme = localStorage.getItem('theme') || 'default';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        
-        // 切换主题菜单显示
-        themeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            themeMenu.classList.toggle('active');
-        });
-        
-        // 点击主题选项
-        themeOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const theme = option.getAttribute('data-theme');
-                document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme);
-                themeMenu.classList.remove('active');
-            });
-        });
-        
-        // 点击页面其他地方关闭菜单
-        document.addEventListener('click', (e) => {
-            if (!themeBtn.contains(e.target) && !themeMenu.contains(e.target)) {
-                themeMenu.classList.remove('active');
-            }
-        });
-    </script>
+    <!-- 返回顶部按钮 -->
+    <button class="back-to-top" id="backToTop" aria-label="返回顶部">↑</button>
+    
+    <!-- 
+        ============================================
+        JavaScript 代码
+        外部 JavaScript 文件
+        将 JavaScript 提取到独立文件，实现模块化开发
+        ============================================
+    -->
+    <script src="script.js"></script>
 </body>
 </html>
+
+<!-- 
+    ============================================
+    整体可拓展建议
+    ============================================
+    
+    2. 内容扩展：
+       - 添加博客文章列表
+       - 添加作品集展示
+       - 添加技能进度条
+       - 添加时间线（教育经历、工作经历）
+    
+    3. 功能扩展：
+       - 添加搜索功能
+       - 添加标签筛选
+       - 添加评论系统
+       - 添加分享功能
+    
+    4. 技术升级：
+       - 使用 React/Vue 等框架重构
+       - 使用 CSS 预处理器（Sass/Less）
+       - 使用构建工具（Webpack/Vite）
+       - 添加 TypeScript 支持
+    
+    5. SEO 优化：
+       - 添加 meta 标签（description, keywords）
+       - 添加 Open Graph 标签（社交媒体分享）
+       - 添加结构化数据（JSON-LD）
+       - 添加 sitemap.xml
+    
+    6. 性能优化：
+       - 图片优化和懒加载
+       - 使用 CDN
+       - 添加缓存策略
+       - 代码压缩和合并
+-->

@@ -1,0 +1,592 @@
+/* ============================================
+   CSS 变量（CSS Custom Properties）定义
+   使用 :root 选择器定义全局变量
+   这些变量可以在整个文档中重复使用
+   ============================================ */
+
+:root {
+    /* 
+        默认主题（紫色）
+        这些变量定义了页面的默认颜色方案
+        使用 var(--变量名) 可以在其他地方引用这些值
+    */
+    --bg-gradient-start: #667eea;      /* 背景渐变起始颜色 */
+    --bg-gradient-end: #764ba2;        /* 背景渐变结束颜色 */
+    --primary-color: #667eea;          /* 主色调（用于标题、技能标签等） */
+    --text-color: #333;                 /* 正文文字颜色 */
+    --content-bg: white;                /* 内容区域背景色 */
+    --header-text: white;                /* 头部文字颜色 */
+    --border-color: #e0e0e0;            /* 边框颜色 */
+    --link-hover-bg: white;             /* 链接悬停时的背景色 */
+    --link-hover-text: #667eea;         /* 链接悬停时的文字颜色 */
+}
+
+/* 
+    深色主题
+    使用属性选择器 [data-theme="dark"] 来覆盖默认变量
+    当 <html> 标签有 data-theme="dark" 属性时，这些样式生效
+*/
+[data-theme="dark"] {
+    --bg-gradient-start: #8f8f93;
+    --bg-gradient-end: #16213e;
+    --primary-color: #2a2b4e;
+    --text-color: #e0e0e0;              /* 浅色文字，适合深色背景 */
+    --content-bg: #1e1e2e;              /* 深色内容背景 */
+    --header-text: white;
+    --border-color: #333;
+    --link-hover-bg: #0f3460;
+    --link-hover-text: white;
+}
+
+/* 蓝色主题 */
+[data-theme="blue"] {
+    --bg-gradient-start: #3498db;
+    --bg-gradient-end: #2980b9;
+    --primary-color: #3498db;
+    --text-color: #333;
+    --content-bg: white;
+    --header-text: white;
+    --border-color: #e0e0e0;
+    --link-hover-bg: white;
+    --link-hover-text: #3498db;
+}
+
+/* 绿色主题 */
+[data-theme="green"] {
+    --bg-gradient-start: #2ecc71;
+    --bg-gradient-end: #27ae60;
+    --primary-color: #2ecc71;
+    --text-color: #333;
+    --content-bg: white;
+    --header-text: white;
+    --border-color: #e0e0e0;
+    --link-hover-bg: white;
+    --link-hover-text: #2ecc71;
+}
+
+/* 橙色主题 */
+[data-theme="orange"] {
+    --bg-gradient-start: #f39c12;
+    --bg-gradient-end: #e67e22;
+    --primary-color: #f39c12;
+    --text-color: #333;
+    --content-bg: white;
+    --header-text: white;
+    --border-color: #e0e0e0;
+    --link-hover-bg: white;
+    --link-hover-text: #f39c12;
+}
+
+/* ============================================
+   全局样式重置
+   使用通配符选择器 * 选择所有元素
+   ============================================ */
+* {
+    margin: 0;                          /* 清除所有元素的外边距 */
+    padding: 0;                         /* 清除所有元素的内边距 */
+    box-sizing: border-box;             /* 
+                                            盒模型设置
+                                            border-box: 宽度和高度包括内边距和边框
+                                            这样设置 padding 不会增加元素总宽度
+                                        */
+}
+
+/* ============================================
+   页面主体样式
+   ============================================ */
+/* 页面加载动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 滚动淡入动画 */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 加载器动画 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 页面加载时的初始状态 */
+body.loading {
+    overflow: hidden;
+}
+
+/* 加载器样式 */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+body {
+    /* 
+        字体族设置
+        按优先级列出字体，如果第一个不可用，使用下一个
+        -apple-system: macOS/iOS 系统字体
+        BlinkMacSystemFont: Chrome 在 macOS 上的系统字体
+        'Segoe UI': Windows 系统字体
+        Roboto: Android 系统字体
+        sans-serif: 无衬线字体（如果以上都不可用）
+    */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;                  /* 行高：文字行间距，1.6 表示行高是字体大小的 1.6 倍 */
+    color: var(--text-color);           /* 使用 CSS 变量设置文字颜色 */
+    
+    /* 
+        背景渐变
+        linear-gradient: 线性渐变
+        135deg: 渐变角度（135度，从左上到右下）
+        var(--bg-gradient-start) 0%: 起始颜色在 0% 位置
+        var(--bg-gradient-end) 100%: 结束颜色在 100% 位置
+    */
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;                  /* 最小高度为视口高度（100vh = 100% 视口高度） */
+    transition: background 0.5s ease;   /* 背景颜色变化时的过渡动画，0.5秒，缓动效果 */
+}
+
+/* 页面内容淡入动画 */
+.container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* 滚动时淡入的元素 */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   主题选择器样式
+   ============================================ */
+.theme-selector {
+    position: fixed;                    /* 固定定位：相对于浏览器窗口定位，滚动时不会移动 */
+    top: 20px;                          /* 距离顶部 20px */
+    right: 20px;                        /* 距离右边 20px */
+    z-index: 1000;                      /* 层级：确保在其他元素之上显示 */
+}
+
+.theme-btn {
+    /* 
+        半透明背景
+        rgba(255, 255, 255, 0.2): 白色，20% 不透明度
+    */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);        /* 背景模糊效果（毛玻璃效果） */
+    border: 2px solid rgba(255, 255, 255, 0.3);  /* 半透明边框 */
+    color: white;
+    padding: 0.5rem 1rem;              /* 内边距：上下 0.5rem，左右 1rem */
+    border-radius: 25px;                /* 圆角：25px，形成胶囊形状 */
+    cursor: pointer;                    /* 鼠标悬停时显示手型光标 */
+    font-size: 0.9rem;                  /* 字体大小：0.9 倍根元素字体大小 */
+    transition: all 0.3s ease;          /* 所有属性变化时都有过渡动画 */
+}
+
+/* 悬停状态：鼠标放在按钮上时的样式 */
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.3);  /* 背景更不透明 */
+    transform: scale(1.05);             /* 放大 5% */
+}
+
+.theme-menu {
+    position: absolute;                 /* 绝对定位：相对于最近的定位父元素 */
+    top: 100%;                          /* 位于按钮下方 */
+    right: 0;                           /* 右对齐 */
+    margin-top: 0.5rem;                 /* 与按钮的间距 */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 0.5rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);  /* 阴影效果：x偏移 y偏移 模糊半径 颜色 */
+    display: none;                      /* 默认隐藏 */
+    min-width: 150px;                   /* 最小宽度 */
+}
+
+/* 当菜单有 active 类时显示 */
+.theme-menu.active {
+    display: block;
+}
+
+.theme-option {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.theme-option:hover {
+    background: rgba(0,0,0,0.1);       /* 悬停时添加浅灰色背景 */
+}
+
+/* ============================================
+   容器和布局样式
+   ============================================ */
+.container {
+    max-width: 800px;                  /* 最大宽度：限制内容区域宽度，提高可读性 */
+    margin: 0 auto;                     /* 上下边距 0，左右自动：实现水平居中 */
+    padding: 2rem;                     /* 内边距：2rem（约 32px） */
+}
+
+.header {
+    text-align: center;                 /* 文本居中对齐 */
+    color: var(--header-text);
+    margin-bottom: 3rem;                /* 下边距：3rem */
+}
+
+.avatar {
+    width: 150px;                       /* 宽度 */
+    height: 150px;                      /* 高度 */
+    border-radius: 50%;                 /* 50% 圆角：形成圆形 */
+    border: 4px solid white;             /* 4px 白色边框 */
+    margin: 0 auto 1rem;                /* 上下 0，左右自动（居中），下边距 1rem */
+    background: #ddd;                   /* 背景色：浅灰色 */
+    
+    /* Flexbox 布局：用于居中显示内容 */
+    display: flex;
+    align-items: center;                /* 垂直居中 */
+    justify-content: center;            /* 水平居中 */
+    font-size: 3rem;                    /* 字体大小：emoji 图标大小 */
+}
+
+/* 一级标题样式 */
+h1 {
+    font-size: 2.5rem;                  /* 字体大小：2.5 倍根元素字体大小 */
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;                       /* 不透明度：90%，稍微透明 */
+}
+
+.content {
+    background: var(--content-bg);
+    border-radius: 15px;                /* 圆角：15px */
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);  /* 阴影：向下偏移 10px，模糊 30px */
+    transition: background 0.5s ease;
+}
+
+.section {
+    margin-bottom: 2rem;                /* 每个区块之间的间距 */
+}
+
+/* 二级标题样式 */
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);  /* 底部边框：2px 实线 */
+    padding-bottom: 0.5rem;             /* 底部内边距：增加与边框的间距 */
+    transition: color 0.5s ease;
+}
+
+/* ============================================
+   技能标签样式
+   ============================================ */
+.skills {
+    /* Flexbox 布局：弹性盒子 */
+    display: flex;
+    flex-wrap: wrap;                    /* 允许换行：当空间不足时，标签换到下一行 */
+    gap: 0.5rem;                        /* 间距：标签之间的间距 */
+}
+
+.skill {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;             /* 内边距：上下小，左右大 */
+    border-radius: 20px;                /* 圆角：形成胶囊形状 */
+    font-size: 0.9rem;
+    transition: background 0.5s ease;
+}
+
+/* ============================================
+   项目/学习记录样式
+   ============================================ */
+.projects {
+    display: grid;                      /* Grid 布局：网格布局 */
+    gap: 1rem;                          /* 网格项之间的间距 */
+}
+
+.project {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  /* 多个属性过渡 */
+}
+
+/* 悬停效果：鼠标放在项目卡片上时 */
+.project:hover {
+    transform: translateY(-2px);        /* 向上移动 2px：产生浮起效果 */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);  /* 增强阴影：更明显的浮起效果 */
+}
+
+.project h3 {
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+/* ============================================
+   链接样式
+   ============================================ */
+.links {
+    display: flex;
+    justify-content: center;            /* 水平居中 */
+    gap: 1rem;                          /* 链接之间的间距 */
+    margin-top: 2rem;
+}
+
+.link {
+    color: white;
+    text-decoration: none;               /* 去除下划线 */
+    padding: 0.5rem 1rem;
+    border: 2px solid white;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.link:hover {
+    background: var(--link-hover-bg);
+    color: var(--link-hover-text);
+}
+
+/* ============================================
+   返回顶部按钮
+   ============================================ */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+/* ============================================
+   技能进度条样式
+   ============================================ */
+.skill-item {
+    margin-bottom: 1rem;
+}
+
+.skill-name {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.skill-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-progress {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: width 1.5s ease-out;
+    width: 0;
+}
+
+/* ============================================
+   改进的联系方式样式
+   ============================================ */
+.contact-item {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.contact-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.contact-icon {
+    font-size: 1.2rem;
+}
+
+/* ============================================
+   响应式设计：媒体查询
+   当屏幕宽度小于等于 768px 时应用这些样式
+   这确保在手机和平板上也能良好显示
+   ============================================ */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;                  /* 移动设备上减少内边距 */
+    }
+    
+    h1 {
+        font-size: 2rem;                /* 移动设备上减小标题字体 */
+    }
+    
+    .theme-selector {
+        top: 10px;                      /* 调整主题按钮位置 */
+        right: 10px;
+    }
+    
+    .theme-btn {
+        padding: 0.4rem 0.8rem;         /* 移动设备上减小按钮尺寸 */
+        font-size: 0.8rem;
+    }
+    
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+}
+
+/* 平板设备优化（768px - 1024px） */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 700px;
+    }
+}
+
+/* 大屏幕优化（> 1200px） */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 900px;
+    }
+}
+
+/* ============================================
+   可访问性支持：减少动画
+   当用户偏好减少动画时，禁用动画效果
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .fade-in {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .content {
+        border: 2px solid var(--text-color);
+    }
+    
+    .project {
+        border-width: 2px;
+    }
+}
+
+/* 
+    ============================================
+    可拓展的地方（CSS 部分）
+    ============================================
+    
+    1. 添加更多主题：
+       - 可以添加粉色、红色、青色等主题
+       - 可以添加自定义主题颜色选择器
+    
+    2. 动画效果：
+       - 添加页面加载动画
+       - 添加滚动时的淡入效果
+       - 添加技能标签的动画效果
+    
+    3. 响应式优化：
+       - 添加平板设备的媒体查询（768px - 1024px）
+       - 优化大屏幕显示（> 1200px）
+    
+    4. 交互效果：
+       - 添加按钮点击动画
+       - 添加卡片翻转效果
+       - 添加加载动画
+    
+    5. 可访问性：
+       - 添加 prefers-reduced-motion 媒体查询（减少动画）
+       - 添加高对比度模式支持
+*/
